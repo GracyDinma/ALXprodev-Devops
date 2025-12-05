@@ -1,15 +1,13 @@
 #!/bin/bash
 
 #Extracting files using jq
-NAME=$(jq -r '.name' data.json)
-HEIGHT=$(jq -r '.height' data.json)
-WEIGHT=$(jq -r '.weight' data.json)
-TYPE=$(jq -r '.type' data.json)
+name=$(jq -r '.name' data.json | sed 's/.*/\u&/')
+height=$(jq -r '.height' data.json | sed 's/.*/\u&/')
+weight=$(jq -r '.weight' data.json | sed 's/./\u&/')
+type=$(jq -r '.type' data.json | sed 's/.*/\u&/')
 
 #Conversion of height and weight
-HEIGHT_M=$(awk "BEGIN{printf \"%.1f\", $HEIGHT/10}")
-WEIGHT_KG=$(awk "BEGIN {printf \"%.1f\", $WEIGHT/10}")
+formatted_height=$(awk "BEGIN{printf \"%.1f\", $height/10}")
+formatted_weight=$(awk "BEGIN {printf \"%.1f\", $weight/10}")
 
-NAME_CAP="${NAME^}"
-TYPE_CAP="${TYPE^}"
-echo "$NAME_CAP is of type $TYPE_CAP, weighs ${WEIGHT_KG}kg, and is ${HEIGHT_M}m tall."
+echo "$name is of type $type weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
