@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "name,height,weight" > report.csv
+
+# Looping through the json file
+for file in *.json
+do
+    name=$(jq -r '.name' "$file")
+    height=$(jq -r '.height' "$file")
+    weight=$(jq -r '.weight' "$file")
+
+    echo "$name.$height,$weight" >> report.csv
+done
+
+# Calculating averages
+awk -F, 'NR>1 {h+=$2; w+=$3; count++}
+END {
+    print "Average Height:", h/count;
+    print "Average Weight:", w/count
+    }' report.csv
