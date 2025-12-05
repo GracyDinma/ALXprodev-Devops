@@ -1,0 +1,24 @@
+#!/bin/bash
+
+POKEMON_LIST="bulbasaur ivysaur charmander charmeleon"
+
+echo "Staring parallel Pokemon fetch..."
+
+for pokemon in $POKEMON_LIST
+do
+    (
+        echo "Fetching $pokemon ..."
+
+        curl -s "https://pokeapi.co/api/v2/pokemon/$pokemon" -o "${pokemon}.json"
+
+        if [ $? -eq 0 ]; then
+            echo "Completed: $pokemon"
+        else
+            echo "Failed: $pokemon" >> errors.txt
+        fi
+    ) &
+done
+
+wait
+
+echo "All Pokemon fetch operations completed!"
