@@ -12,8 +12,9 @@ do
     echo "$name.$height,$weight" >> report.csv
 done
 
+sed -i 's/^\(.\)/\U\1/' report.csv
 # Calculating averages
-awk -F, 'NR>1 {h+=$2; w+=$3; count++}
+awk -F, 'NR>1 {h += $2; w += $3; count++}
 END {
     print "Average Height:", h/count;
     print "Average Weight:", w/count
